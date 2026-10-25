@@ -1,0 +1,100 @@
+{
+  "prizes": [
+    {
+      "id": "voucher-10",
+      "name": "Voucher 10%",
+      "weight": 28,
+      "color": "#ccefe7"
+    },
+    {
+      "id": "gift-bag",
+      "name": "Túi quà xinh",
+      "weight": 8,
+      "color": "#a8dfd2"
+    },
+    {
+      "id": "voucher-5",
+      "name": "Voucher 5%",
+      "weight": 28,
+      "color": "#e1f5ef"
+    },
+    {
+      "id": "try-again",
+      "name": "Chúc bạn may mắn",
+      "weight": 20,
+      "color": "#b8e7dc"
+    },
+    {
+      "id": "free-ship",
+      "name": "Freeship",
+      "weight": 12,
+      "color": "#d4f0e8"
+    },
+    {
+      "id": "big-gift",
+      "name": "Quà đặc biệt",
+      "weight": 4,
+      "color": "#91d4c4"
+    }
+  ],
+  "codes": [
+    {
+      "code": "LUCKY-2026-001",
+      "usedAt": "2026-10-25T10:37:59.636Z",
+      "prizeId": "try-again"
+    },
+    {
+      "code": "LUCKY-2026-002",
+      "usedAt": null,
+      "prizeId": null
+    },
+    {
+      "code": "LUCKY-2026-003",
+      "usedAt": null,
+      "prizeId": null
+    },
+    {
+      "code": "LUCKY-2026-004",
+      "usedAt": null,
+      "prizeId": null
+    },
+    {
+      "code": "LUCKY-2026-005",
+      "usedAt": null,
+      "prizeId": null
+    },
+    {
+      "code": "LUCKY-2026-006",
+      "usedAt": null,
+      "prizeId": null
+    },
+    {
+      "code": "LUCKY-2026-007",
+      "usedAt": null,
+      "prizeId": null
+    },
+    {
+      "code": "LUCKY-2026-008",
+      "usedAt": null,
+      "prizeId": null
+    },
+    {
+      "code": "LUCKY-2026-009",
+      "usedAt": null,
+      "prizeId": null
+    },
+    {
+      "code": "LUCKY-2026-010",
+      "usedAt": null,
+      "prizeId": null
+    }
+  ],
+  "spins": [
+    {
+      "code": "LUCKY-2026-001",
+      "prize": "Chúc bạn may mắn",
+      "prizeId": "try-again",
+      "spunAt": "2026-10-25T10:37:59.636Z"
+    }
+  ]
+}

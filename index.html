@@ -10,13 +10,13 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="/styles.css">
-    <script src="/app.js" defer></script>
+    <link rel="stylesheet" href="public/styles.css">
+    <script src="public/app.js" defer></script>
   </head>
   <body>
     <div class="page-shell">
       <header class="topbar">
-        <a class="brand" href="/" aria-label="Vòng quay may mắn">
+        <a class="brand" href="./" aria-label="Vòng quay may mắn">
           <span class="brand-mark" aria-hidden="true"><span></span></span>
           <span class="brand-name">MAY MẮN<span class="brand-period">.</span></span>
         </a>
@@ -45,14 +45,14 @@
               <span class="orbit orbit-one" aria-hidden="true"></span>
               <span class="orbit orbit-two" aria-hidden="true"></span>
             </div>
-            <p class="wheel-footnote"><span aria-hidden="true">✳</span> Mỗi mã chỉ có một lượt quay</p>
+            <p class="wheel-footnote"><span aria-hidden="true">✳</span> Mỗi mã có một lượt trên trình duyệt này</p>
           </div>
 
           <aside class="entry-panel" aria-labelledby="entry-title">
             <div class="panel-topline"><span class="panel-index">01</span><span>NHẬP MÃ THAM GIA</span></div>
             <div class="panel-content" id="entry-content">
               <h2 id="entry-title">Sẵn sàng<br>thử vận may?</h2>
-              <p class="panel-copy">Mã quay được gửi riêng cho bạn. Nhập mã để mở lượt quay duy nhất.</p>
+              <p class="panel-copy">Mã quay được gửi riêng cho bạn. Nhập mã để mở lượt quay.</p>
               <form id="spin-form" novalidate>
                 <label for="code-input">MÃ CỦA BẠN</label>
                 <div class="input-wrap">
@@ -69,13 +69,14 @@
                 <div class="summary-heading"><span>QUÀ ĐANG CHỜ</span><span class="summary-count" id="prize-count">—</span></div>
                 <ul class="prize-list" id="prize-list" aria-label="Danh sách phần quà"></ul>
               </div>
+              <button class="export-button" id="export-results" type="button"><span aria-hidden="true">↓</span> Tải kết quả JSON</button>
             </div>
             <div class="winner-content" id="winner-content" hidden aria-live="polite">
               <span class="winner-stamp" aria-hidden="true">✦</span>
               <p class="winner-label">KẾT QUẢ CỦA BẠN</p>
               <h2 id="winner-title">Bạn nhận được</h2>
               <p class="winner-prize" id="winner-prize"></p>
-              <p class="winner-note">Cảm ơn bạn đã tham gia. Hãy lưu lại kết quả này nhé!</p>
+              <p class="winner-note">Kết quả được lưu trên trình duyệt này. Hãy tải JSON để lưu lại.</p>
               <button class="reset-button" id="reset-button" type="button">Đóng kết quả</button>
             </div>
           </aside>

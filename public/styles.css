@@ -98,6 +98,9 @@ h1 span { color: var(--green); }
 .prize-list { display: grid; grid-template-columns: 1fr 1fr; gap: 9px 12px; padding: 0; margin: 0; list-style: none; }
 .prize-list li { display: flex; align-items: center; gap: 7px; min-width: 0; color: #466458; font-size: 10px; }
 .prize-swatch { flex: 0 0 8px; width: 8px; height: 8px; border-radius: 2px; }
+.export-button { display: flex; align-items: center; gap: 7px; margin: 17px 0 0 auto; padding: 7px 0; border: 0; background: transparent; color: #557b6b; cursor: pointer; font-size: 10px; font-weight: 700; }
+.export-button span { width: 19px; height: 19px; display: grid; place-items: center; border: 1px solid #c9ded1; border-radius: 50%; font-size: 13px; }
+.export-button:hover { color: var(--green-deep); }
 .winner-content { min-height: 400px; padding: 44px 28px 24px; text-align: center; }
 .winner-stamp { width: 60px; height: 60px; display: grid; place-items: center; margin: 0 auto 20px; border-radius: 50%; background: #e6f3c9; color: #6c9a37; font-size: 29px; animation: pop .45s both; }
 .winner-label { margin: 0 0 12px; color: var(--green); font-size: 9px; }

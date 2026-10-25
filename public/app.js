@@ -10,8 +10,11 @@ const entryContent = document.querySelector('#entry-content');
 const winnerContent = document.querySelector('#winner-content');
 const winnerPrize = document.querySelector('#winner-prize');
 const resetButton = document.querySelector('#reset-button');
+const exportButton = document.querySelector('#export-results');
 const toast = document.querySelector('#toast');
 
+const storageKey = 'zalo-lucky-wheel-store-v1';
+let store;
 let prizes = [];
 let currentRotation = 0;
 let spinning = false;
@@ -53,15 +56,61 @@ function renderPrizes(items) {
 
 async function loadPrizes() {
   try {
-    const response = await fetch('/api/prizes');
-    if (!response.ok) throw new Error('Không tải được danh sách quà.');
-    const data = await response.json();
-    if (!Array.isArray(data.prizes) || data.prizes.length < 2) throw new Error('Danh sách quà chưa sẵn sàng.');
-    renderPrizes(data.prizes);
+    const response = await fetch(new URL('./data/store.json', window.location.href));
+    if (!response.ok) throw new Error('Không tải được cấu hình quà.');
+    const initialStore = await response.json();
+    if (!Array.isArray(initialStore.prizes) || initialStore.prizes.length < 2 || !Array.isArray(initialStore.codes)) {
+      throw new Error('Cấu hình vòng quay chưa hợp lệ.');
+    }
+
+    store = loadSavedStore(initialStore);
+    saveStore();
+    prizes = store.prizes;
+    renderPrizes(prizes);
   } catch (error) {
-    formMessage.textContent = error.message;
+    formMessage.textContent = `${error.message} Mở ứng dụng qua GitHub Pages hoặc Live Server.`;
     spinButton.disabled = true;
   }
+}
+
+function loadSavedStore(initialStore) {
+  const savedValue = localStorage.getItem(storageKey);
+  if (!savedValue) return initialStore;
+
+  try {
+    const savedStore = JSON.parse(savedValue);
+    if (!Array.isArray(savedStore.codes) || !Array.isArray(savedStore.spins)) return initialStore;
+
+    const savedCodes = new Map(savedStore.codes.map((entry) => [entry.code.toUpperCase(), entry]));
+    initialStore.codes = initialStore.codes.map((entry) => {
+      const savedEntry = savedCodes.get(entry.code.toUpperCase());
+      return savedEntry && savedEntry.usedAt ? { ...entry, usedAt: savedEntry.usedAt, prizeId: savedEntry.prizeId } : entry;
+    });
+
+    const spinsByCode = new Map(initialStore.spins.map((spin) => [spin.code.toUpperCase(), spin]));
+    savedStore.spins.forEach((spin) => spinsByCode.set(spin.code.toUpperCase(), spin));
+    initialStore.spins = Array.from(spinsByCode.values());
+  } catch {
+    localStorage.removeItem(storageKey);
+  }
+
+  return initialStore;
+}
+
+function saveStore() {
+  localStorage.setItem(storageKey, JSON.stringify(store));
+}
+
+function choosePrizeIndex() {
+  const totalWeight = prizes.reduce((sum, prize) => sum + Math.max(0, Number(prize.weight) || 0), 0);
+  if (!Number.isSafeInteger(totalWeight) || totalWeight <= 0) throw new Error('Cấu hình trọng số quà không hợp lệ.');
+
+  let ticket = Math.random() * totalWeight;
+  for (let index = 0; index < prizes.length; index += 1) {
+    ticket -= Math.max(0, Number(prizes[index].weight) || 0);
+    if (ticket < 0) return index;
+  }
+  return prizes.length - 1;
 }
 
 function animateToPrize(index) {
@@ -99,21 +148,25 @@ spinForm.addEventListener('submit', async (event) => {
   spinButton.querySelector('span:first-child').textContent = 'Đang quay...';
 
   try {
-    const response = await fetch('/api/spin', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ code })
-    });
-    const data = await response.json();
-    if (!response.ok) throw new Error(data.error || 'Không thể thực hiện lượt quay.');
+    const codeEntry = store.codes.find((entry) => entry.code.toUpperCase() === code);
+    if (!codeEntry) throw new Error('Mã không tồn tại. Hãy kiểm tra lại nhé.');
+    if (codeEntry.usedAt) throw new Error('Mã này đã được sử dụng trên trình duyệt này.');
 
-    await animateToPrize(data.prizeIndex);
-    winnerPrize.textContent = data.prize.name;
+    const prizeIndex = choosePrizeIndex();
+    const prize = prizes[prizeIndex];
+    const spunAt = new Date().toISOString();
+    codeEntry.usedAt = spunAt;
+    codeEntry.prizeId = prize.id;
+    store.spins.push({ code: codeEntry.code, prize: prize.name, prizeId: prize.id, spunAt });
+    saveStore();
+
+    await animateToPrize(prizeIndex);
+    winnerPrize.textContent = prize.name;
     entryContent.hidden = true;
     winnerContent.hidden = false;
   } catch (error) {
     formMessage.textContent = error.message;
-    if (error.message.includes('đã được sử dụng')) showToast('Mỗi mã chỉ dùng được một lần.');
+    if (error.message.includes('đã được sử dụng')) showToast('Mã này đã quay trên trình duyệt này.');
     spinButton.disabled = false;
   } finally {
     spinning = false;
@@ -128,6 +181,20 @@ resetButton.addEventListener('click', () => {
   formMessage.textContent = '';
   spinButton.disabled = false;
   codeInput.focus();
+});
+
+exportButton.addEventListener('click', () => {
+  if (!store) return;
+  const exportData = {
+    exportedAt: new Date().toISOString(),
+    spins: store.spins
+  };
+  const downloadUrl = URL.createObjectURL(new Blob([`${JSON.stringify(exportData, null, 2)}\n`], { type: 'application/json' }));
+  const downloadLink = document.createElement('a');
+  downloadLink.href = downloadUrl;
+  downloadLink.download = 'vong-quay-ket-qua.json';
+  downloadLink.click();
+  URL.revokeObjectURL(downloadUrl);
 });
 
 loadPrizes();

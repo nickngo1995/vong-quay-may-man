@@ -1,0 +1,16 @@
+{
+  "app": {
+    "title": "Vòng quay may mắn by Tomikem",
+    "headerTitle": "Vòng quay may mắn by Tomikem",
+    "headerColor": "#147B5B",
+    "textColor": "white",
+    "leftButton": "back",
+    "statusBar": "normal",
+    "actionBarHidden": false,
+    "hideAndroidBottomNavigationBar": false,
+    "hideIOSSafeAreaBottom": false
+  },
+  "listCSS": ["public/styles.css"],
+  "listSyncJS": [],
+  "listAsyncJS": ["public/app.js"]
+}
